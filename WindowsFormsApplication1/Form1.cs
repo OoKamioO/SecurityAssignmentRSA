@@ -14,6 +14,8 @@ namespace WindowsFormsApplication1
     {
         int prime1;
         int prime2;
+        private int encryptKey;
+        private int mod;
 
         public Form1()
         {
@@ -42,7 +44,7 @@ namespace WindowsFormsApplication1
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            int encryptKey = 0;
+            encryptKey = 0;
 
             if (Int32.TryParse(textBox1.Text, out prime1) && Int32.TryParse(textBox2.Text, out prime2))
             {
@@ -54,7 +56,7 @@ namespace WindowsFormsApplication1
                     if (checkPrime1.calculateIfPrime() && checkPrime2.calculateIfPrime())
                     {
                         /*Numbers are prime*/
-                        int mod = (prime1 - 1) * (prime2 - 2); //Number of cooprimes in the product of prime1 and prime2
+                        mod = (prime1 - 1) * (prime2 - 1); //Number of cooprimes in the product of prime1 and prime2
 
                         for(int i = 2; i < mod; i++)
                         {
@@ -66,6 +68,8 @@ namespace WindowsFormsApplication1
 
                         primeText.Text = encryptKey + " is the encrypt key";
 
+                        Form2 form = new Form2(this);
+                        form.Show();
                     }
                     else
                     {
@@ -82,6 +86,16 @@ namespace WindowsFormsApplication1
             {
                 primeText.Text = "Please enter numbers";
             }
+        }
+
+        public int getEncrypt()
+        {
+            return encryptKey;
+        }
+
+        public int getMod()
+        {
+            return mod;
         }
     }
 }

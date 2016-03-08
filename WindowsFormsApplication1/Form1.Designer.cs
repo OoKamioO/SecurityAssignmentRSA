@@ -96,7 +96,7 @@
             // primeText
             // 
             this.primeText.AutoSize = true;
-            this.primeText.Location = new System.Drawing.Point(84, 284);
+            this.primeText.Location = new System.Drawing.Point(229, 250);
             this.primeText.Name = "primeText";
             this.primeText.Size = new System.Drawing.Size(0, 25);
             this.primeText.TabIndex = 7;
@@ -105,7 +105,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(656, 520);
+            this.ClientSize = new System.Drawing.Size(659, 330);
             this.Controls.Add(this.primeText);
             this.Controls.Add(this.SubmitButton);
             this.Controls.Add(this.textBox2);
