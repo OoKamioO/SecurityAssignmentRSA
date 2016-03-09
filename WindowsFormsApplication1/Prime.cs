@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace WindowsFormsApplication1
 {
     public class Prime
     {
-        private int num;
+        private BigInteger num;
 
-        public Prime(int prime)
+        public Prime(BigInteger prime)
         {
             num = prime;
         }

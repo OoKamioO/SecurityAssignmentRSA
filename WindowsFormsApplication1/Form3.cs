@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace WindowsFormsApplication1
 {
@@ -32,18 +33,18 @@ namespace WindowsFormsApplication1
             string messageEncrypted = null; //Holds encrypted message in string format
             int messageLen = EncryptBox.Text.Length; 
 
-            int[] messageInHex = new int[messageLen]; //Gives each character their HEX value
-            long[] encryptMessageInHex = new long[messageLen]; //Holds value after being powered
-            long[] messageCipher = new long[messageLen]; //Holds the encrypted message
+            BigInteger[] messageInHex = new BigInteger[messageLen]; //Gives each character their HEX value
+            BigInteger[] encryptMessageInHex = new BigInteger[messageLen]; //Holds value after being powered
+            BigInteger[] messageCipher = new BigInteger[messageLen]; //Holds the encrypted message
 
-            int mod = data.form.getMod();
+            BigInteger mod = data.form.getMod();
             int encryptKey = data.form.getEncrypt();
 
             for (int i = 0; i < messageLen; i++)
             {
                 messageInHex[i] = Convert.ToByte(message[i]);
 
-                encryptMessageInHex[i] = (long)Math.Pow(messageInHex[i], encryptKey);
+                encryptMessageInHex[i] = BigInteger.Pow(messageInHex[i], encryptKey);
                 messageCipher[i] = encryptMessageInHex[i]%mod;
 
                 messageEncrypted = messageEncrypted + (messageCipher[i]);

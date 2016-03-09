@@ -7,15 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        int prime1;
-        int prime2;
+        BigInteger prime1;
+        BigInteger prime2;
         private int encryptKey;
-        private int mod;
+        private BigInteger mod;
 
         public Form1()
         {
@@ -46,7 +47,7 @@ namespace WindowsFormsApplication1
         {
             encryptKey = 0;
 
-            if (Int32.TryParse(textBox1.Text, out prime1) && Int32.TryParse(textBox2.Text, out prime2))
+            if (BigInteger.TryParse(textBox1.Text, out prime1) && BigInteger.TryParse(textBox2.Text, out prime2))
             {
                 if (prime1 != prime2)
                 {
@@ -93,7 +94,7 @@ namespace WindowsFormsApplication1
             return encryptKey;
         }
 
-        public int getMod()
+        public BigInteger getMod()
         {
             return mod;
         }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace WindowsFormsApplication1
 {
@@ -14,8 +15,8 @@ namespace WindowsFormsApplication1
     {
         public Form1 form;
         int decryptCount;
-        int mod;
-        int encrypt;
+        BigInteger mod;
+        BigInteger encrypt;
 
         public Form2(Form1 a)
         {
@@ -41,7 +42,7 @@ namespace WindowsFormsApplication1
             {
                 int counter = 0;
                 int decryptKey = 0; //i.e. the multiple
-                int product = 0;
+                BigInteger product = 0;
 
                 while (counter < decryptCount)
                 {
