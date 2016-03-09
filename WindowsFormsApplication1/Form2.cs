@@ -12,7 +12,7 @@ namespace WindowsFormsApplication1
 {
     public partial class Form2 : Form
     {
-        Form1 form;
+        public Form1 form;
         int decryptCount;
         int mod;
         int encrypt;
@@ -57,6 +57,9 @@ namespace WindowsFormsApplication1
 
                 //decryptText.Text = decryptKey + " is the decryption key";
                 decryptText.Text = decryptKey + " is the decrypt";
+
+                Form3 form1 = new Form3(this);
+                form1.Show();
             }
             else
             {
