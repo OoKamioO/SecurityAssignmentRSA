@@ -15,8 +15,9 @@ namespace WindowsFormsApplication1
     {
         BigInteger prime1;
         BigInteger prime2;
-        private int encryptKey;
         private BigInteger mod;
+
+        CreateFile primeFile = new CreateFile();
 
         public Form1()
         {
@@ -45,8 +46,6 @@ namespace WindowsFormsApplication1
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            encryptKey = 0;
-
             if (BigInteger.TryParse(textBox1.Text, out prime1) && BigInteger.TryParse(textBox2.Text, out prime2))
             {
                 if (prime1 != prime2)
@@ -57,17 +56,11 @@ namespace WindowsFormsApplication1
                     if (checkPrime1.calculateIfPrime() && checkPrime2.calculateIfPrime())
                     {
                         /*Numbers are prime*/
-                        mod = (prime1 - 1) * (prime2 - 1); //Number of cooprimes in the product of prime1 and prime2
+                        mod = prime1 * prime2;
 
-                        for(int i = 2; i < mod; i++)
-                        {
-                            if((i%prime1 != 0) && (i%prime2 != 0) && (i%mod != 0))
-                            {
-                                encryptKey = i;
-                            }
-                        }
+                        primeText.Text = mod + " is the public key";
 
-                        primeText.Text = encryptKey + " is the encrypt key";
+                        primeFile.CreateFilePrime(prime1, prime2, mod);
 
                         Form2 form = new Form2(this);
                         form.Show();
@@ -89,14 +82,19 @@ namespace WindowsFormsApplication1
             }
         }
 
-        public int getEncrypt()
-        {
-            return encryptKey;
-        }
-
         public BigInteger getMod()
         {
             return mod;
+        }
+
+        public BigInteger getPrime1()
+        {
+            return prime1;
+        }
+
+        public BigInteger getPrime2()
+        {
+            return prime2;
         }
     }
 }

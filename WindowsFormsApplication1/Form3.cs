@@ -8,16 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Numerics;
+using System.IO;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form3 : Form
     {
+        FileStream file;
+
+        CreateFile cipherText;
+
         Form2 data;
 
         public Form3(Form2 a)
         {
             data = a;
+
+            cipherText = new CreateFile();
 
             InitializeComponent();
         }
@@ -34,23 +41,43 @@ namespace WindowsFormsApplication1
             int messageLen = EncryptBox.Text.Length; 
 
             BigInteger[] messageInHex = new BigInteger[messageLen]; //Gives each character their HEX value
-            BigInteger[] encryptMessageInHex = new BigInteger[messageLen]; //Holds value after being powered
-            BigInteger[] messageCipher = new BigInteger[messageLen]; //Holds the encrypted message
+            BigInteger encryptMessageInHex = new BigInteger(); //Holds value after being powered
+            BigInteger charCipher = new BigInteger(); //Holds the encrypted message
+            
+            BigInteger publicKey = data.form.getMod();
+            BigInteger encryptionKey = data.getEncryptKey();
 
-            BigInteger mod = data.form.getMod();
-            int encryptKey = data.form.getEncrypt();
+            cipherText.CheckExists();
 
             for (int i = 0; i < messageLen; i++)
             {
                 messageInHex[i] = Convert.ToByte(message[i]);
 
-                encryptMessageInHex[i] = BigInteger.Pow(messageInHex[i], encryptKey);
-                messageCipher[i] = encryptMessageInHex[i]%mod;
+                encryptMessageInHex = Power(messageInHex[i], encryptionKey);
 
-                messageEncrypted = messageEncrypted + (messageCipher[i]);
+                charCipher = encryptMessageInHex % publicKey;
+
+                cipherText.CreateFileCipherText(charCipher);
+            }
+            
+            EncryptedText.Text = "Done";
+        }
+
+        BigInteger Power(BigInteger a, BigInteger b)
+        {
+            BigInteger pro = a;
+
+            for (int i = 0; i < b; i++)
+            {
+                pro = BigInteger.Multiply(pro, a);
             }
 
-            EncryptedText.Text = "'" + messageEncrypted + "' is your cipher.";
+            return pro;
         }
+
+        /*int remainder(BigInteger i, int k)
+        {
+
+        }*/
     }
 }

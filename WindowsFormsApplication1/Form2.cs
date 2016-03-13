@@ -8,21 +8,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Numerics;
+using System.IO;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form2 : Form
     {
+        CreateFile decryptResultText;
+
         public Form1 form;
-        int decryptCount;
-        BigInteger mod;
-        BigInteger encrypt;
+        BigInteger decryptCount;
+        BigInteger encryptionCount;
+        BigInteger coPrimes;
+        BigInteger encryptKey;
+
+        BigInteger decryptKey = 0; //i.e. the multiple
+        BigInteger product = 0;
 
         public Form2(Form1 a)
         {
             form = a;
-            encrypt = form.getEncrypt();
-            mod = form.getMod();
+
+            decryptResultText = new CreateFile();
 
             InitializeComponent();
         }
@@ -38,34 +45,92 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (Int32.TryParse(decrpytBox.Text, out decryptCount))
+            BigInteger counter = 0;
+
+            coPrimes = (form.getPrime1() - 1) * (form.getPrime2() - 1); //Number of cooprimes in the product of prime1 and prime2
+            
+            if (BigInteger.TryParse(encryptionBox.Text, out encryptionCount) &&
+                BigInteger.TryParse(decrpytBox.Text, out decryptCount))
             {
-                int counter = 0;
-                int decryptKey = 0; //i.e. the multiple
-                BigInteger product = 0;
+                counter = 0;
 
-                while (counter < decryptCount)
+                for (BigInteger pointer = 2; pointer < coPrimes; pointer++)
                 {
-                    decryptKey++;
-
-                    product = encrypt * decryptKey;
-
-                    if (product % mod == 1)
+                    if ((pointer % form.getPrime1() != 0) && (pointer % form.getPrime2() != 0) && (pointer % form.getMod() != 0))
                     {
+                        encryptKey = pointer;
+
                         counter++;
+                    }
+
+                    if(counter == encryptionCount)
+                    {
+                        break;
                     }
                 }
 
+                counter = 0;
+
+                /*while (counter < decryptCount)
+                {
+                    decryptKey++;
+
+                    product = encryptKey * decryptKey;
+
+                    if ((product % coPrimes) == 1)
+                    {
+                        counter++;
+                    }
+                }*/
+
                 //decryptText.Text = decryptKey + " is the decryption key";
                 decryptText.Text = decryptKey + " is the decrypt";
+                encryptText.Text = encryptKey + " is the encrypt";
+
+                decryptResultText.CreateFileEncrypt(decryptKey, encryptKey);
 
                 Form3 form1 = new Form3(this);
                 form1.Show();
             }
             else
             {
-                decryptText.Text = "Please enter a number.";
+                decryptText.Text = "Please enter numbers.";
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void decryptText_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public BigInteger getEncryptKey()
+        {
+            return encryptKey;
+        }
+
+        public BigInteger getDecryptKey()
+        {
+            return decryptKey;
         }
     }
 }
