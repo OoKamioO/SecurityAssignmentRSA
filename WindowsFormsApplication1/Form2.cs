@@ -30,7 +30,7 @@ namespace WindowsFormsApplication1
             form = a;
 
             decryptResultText = new CreateFile();
-
+            
             InitializeComponent();
         }
 
@@ -48,49 +48,56 @@ namespace WindowsFormsApplication1
             BigInteger counter = 0;
 
             coPrimes = (form.getPrime1() - 1) * (form.getPrime2() - 1); //Number of cooprimes in the product of prime1 and prime2
-            
+
             if (BigInteger.TryParse(encryptionBox.Text, out encryptionCount) &&
                 BigInteger.TryParse(decrpytBox.Text, out decryptCount))
             {
-                counter = 0;
-
-                for (BigInteger pointer = 2; pointer < coPrimes; pointer++)
+                if (encryptionCount > 1)
                 {
-                    if ((pointer % form.getPrime1() != 0) && (pointer % form.getPrime2() != 0) && (pointer % form.getMod() != 0))
-                    {
-                        encryptKey = pointer;
+                    counter = 0;
 
-                        counter++;
+                    for (BigInteger pointer = 2; pointer < coPrimes; pointer++)
+                    {
+                        if ((pointer % form.getPrime1() != 0) && (pointer % form.getPrime2() != 0) && (pointer % form.getMod() != 0))
+                        {
+                            encryptKey = pointer;
+
+                            counter++;
+                        }
+
+                        if (counter == encryptionCount)
+                        {
+                            break;
+                        }
                     }
 
-                    if(counter == encryptionCount)
+                    counter = 0;
+
+                    while (counter < decryptCount)
                     {
-                        break;
+                        decryptKey++;
+
+                        product = encryptKey * decryptKey;
+
+                        if (Remainder(product, coPrimes))
+                        {
+                            counter++;
+                        }
                     }
+
+                    //decryptText.Text = decryptKey + " is the decryption key";
+                    decryptText.Text = decryptKey + " is the decrypt.";
+                    encryptText.Text = encryptKey + " is the encrypt.";
+
+                    decryptResultText.CreateFileEncrypt(decryptKey, encryptKey);
+
+                    Form3 form1 = new Form3(this);
+                    form1.Show();
                 }
-
-                counter = 0;
-
-                /*while (counter < decryptCount)
+                else
                 {
-                    decryptKey++;
-
-                    product = encryptKey * decryptKey;
-
-                    if ((product % coPrimes) == 1)
-                    {
-                        counter++;
-                    }
-                }*/
-
-                //decryptText.Text = decryptKey + " is the decryption key";
-                decryptText.Text = decryptKey + " is the decrypt";
-                encryptText.Text = encryptKey + " is the encrypt";
-
-                decryptResultText.CreateFileEncrypt(decryptKey, encryptKey);
-
-                Form3 form1 = new Form3(this);
-                form1.Show();
+                    decryptText.Text = "Enter an encryption number greater than 1.";
+                }
             }
             else
             {
@@ -131,6 +138,41 @@ namespace WindowsFormsApplication1
         public BigInteger getDecryptKey()
         {
             return decryptKey;
+        }
+
+        public Boolean Remainder(BigInteger a, BigInteger b)
+        {
+            BigInteger bigNumber;
+            BigInteger divisor;
+            
+            BigInteger remainder; //Placeholder value
+
+            if (a > b)
+            {
+                bigNumber = a;
+                divisor = b;
+            }
+            else
+            {
+                bigNumber = b;
+                divisor = a;
+            }
+
+            for(;;)
+            {
+                remainder = bigNumber;
+                bigNumber = BigInteger.Subtract(bigNumber, divisor);
+
+                if (bigNumber <= 0)
+                {
+                    return false;
+                }
+
+                if (bigNumber == 1)
+                {
+                    return true;
+                }
+            }
         }
     }
 }
