@@ -80,7 +80,7 @@
             // decryptText
             // 
             this.decryptText.AutoSize = true;
-            this.decryptText.Location = new System.Drawing.Point(55, 354);
+            this.decryptText.Location = new System.Drawing.Point(55, 360);
             this.decryptText.Name = "decryptText";
             this.decryptText.Size = new System.Drawing.Size(0, 25);
             this.decryptText.TabIndex = 4;

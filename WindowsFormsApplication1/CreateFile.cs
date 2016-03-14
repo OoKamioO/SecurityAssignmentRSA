@@ -5,13 +5,16 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Permissions;
 
 namespace WindowsFormsApplication1
 {
     class CreateFile
     {
         FileStream file1;
+        FileStream file2;
         StreamWriter fileWrite;
+        StreamReader fileRead;
 
         string folderName;
         string subFolderName;
@@ -65,6 +68,67 @@ namespace WindowsFormsApplication1
             File.WriteAllText(pathString, "The encryption key is: " + eKey.ToString());
         }
 
+        public void ReadCipherText(string p, BigInteger publicKey, BigInteger decryptKey)
+        {
+            BigInteger realLetter;
+
+            int lineCount = File.ReadLines(p).Count();
+            String[] messageInHex = new String[lineCount];
+
+            int counter = 0;
+
+            fileName = "decrypt.txt";
+
+            pathString = Path.Combine(folderName, fileName);
+
+            file1 = File.Create(pathString);
+            file1.Close();
+
+            String line;
+
+            file1 = new FileStream(p, FileMode.Open, FileAccess.ReadWrite);
+            fileRead = new StreamReader(file1);
+            fileWrite = new StreamWriter(file1);
+
+            while ((line = fileRead.ReadLine()) != null)
+            {
+                realLetter = Power(Convert.ToInt16(line), decryptKey);
+
+                messageInHex[counter] = (realLetter%publicKey).ToString() + Environment.NewLine;
+
+                counter++;
+            }
+            
+            file1.Close();
+
+            file2 = new FileStream(pathString, FileMode.Open, FileAccess.ReadWrite);
+            fileWrite = new StreamWriter(file2);
+
+            String message = "";
+            char[] message2 = new char[lineCount];
+
+            for(int i = 0; i < lineCount; i++)
+            {
+                int value = Convert.ToInt32(messageInHex[i]);
+                char c = Convert.ToChar(value);
+                message = message + c;
+            }
+
+            fileWrite.WriteLine(message);
+
+            fileWrite.Close();
+        }
+
+        public void CreateFileDecrypt()
+        {
+            fileName = "decrypt.txt";
+
+            pathString = Path.Combine(folderName, fileName);
+
+            file1 = File.Create(pathString);
+            file1.Close();
+        }
+
         public void CreateFileCipherText(BigInteger cipher)
         {
             /*fileName = "cipher.txt";
@@ -105,6 +169,33 @@ namespace WindowsFormsApplication1
             {
                 return false;
             }*/
+        }
+
+        private string HexString2Ascii(string hexString)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i <= hexString.Length - 2; i += 2)
+            {
+                sb.Append(Convert.ToString(Convert.ToChar(Int32.Parse(hexString.Substring(i, 2), System.Globalization.NumberStyles.HexNumber))));
+            }
+            return sb.ToString();
+        }
+
+        public string returnPath()
+        {
+            return pathString;
+        }
+
+        BigInteger Power(BigInteger a, BigInteger b)
+        {
+            BigInteger pro = 1;
+
+            for (int i = 0; i < b; i++)
+            {
+                pro = pro * a;
+            }
+
+            return pro;
         }
     }
 }

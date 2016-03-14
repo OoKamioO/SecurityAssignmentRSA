@@ -14,8 +14,6 @@ namespace WindowsFormsApplication1
 {
     public partial class Form3 : Form
     {
-        FileStream file;
-
         CreateFile cipherText;
 
         Form2 data;
@@ -37,7 +35,7 @@ namespace WindowsFormsApplication1
         private void encryptButton_Click(object sender, EventArgs e)
         {
             string message = EncryptBox.Text;
-            string messageEncrypted = null; //Holds encrypted message in string format
+            string filePath;
             int messageLen = EncryptBox.Text.Length; 
 
             BigInteger[] messageInHex = new BigInteger[messageLen]; //Gives each character their HEX value
@@ -46,6 +44,7 @@ namespace WindowsFormsApplication1
             
             BigInteger publicKey = data.form.getMod();
             BigInteger encryptionKey = data.getEncryptKey();
+            BigInteger decryptKey = data.getDecryptKey();
 
             cipherText.CheckExists();
 
@@ -53,31 +52,33 @@ namespace WindowsFormsApplication1
             {
                 messageInHex[i] = Convert.ToByte(message[i]);
 
+                Console.WriteLine(messageInHex[i]);
+
                 encryptMessageInHex = Power(messageInHex[i], encryptionKey);
 
                 charCipher = encryptMessageInHex % publicKey;
 
                 cipherText.CreateFileCipherText(charCipher);
             }
-            
-            EncryptedText.Text = "Done";
+
+            filePath = cipherText.returnPath();
+
+            EncryptedText.Text = "Done" + encryptMessageInHex;
+
+            Form4 form = new Form4(this, filePath, publicKey, decryptKey);
+            form.Show();
         }
 
         BigInteger Power(BigInteger a, BigInteger b)
         {
-            BigInteger pro = a;
+            BigInteger pro = 1;
 
             for (int i = 0; i < b; i++)
             {
-                pro = BigInteger.Multiply(pro, a);
+                pro = pro * a;
             }
 
             return pro;
         }
-
-        /*int remainder(BigInteger i, int k)
-        {
-
-        }*/
     }
 }
