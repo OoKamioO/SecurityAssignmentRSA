@@ -16,6 +16,7 @@ namespace WindowsFormsApplication1
         public RSA_Primes primeOptions = new RSA_Primes();
         public RSA_KEYS keyOptions;
         public RSA_Encrypt encryptOptions;
+        public RSA_decrypt decryptOptions;
 
         public Form1()
         {
@@ -28,11 +29,6 @@ namespace WindowsFormsApplication1
         }
 
         private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
         {
 
         }
@@ -82,6 +78,20 @@ namespace WindowsFormsApplication1
             }
         }
 
+        private void decryptButton_Click(object sender, EventArgs e)
+        {
+            if(decryptTextLink.Text.Trim().Length != 0)
+            {
+                decryptOptions = new RSA_decrypt(this, decryptTextLink.Text);
+
+                decryptIndicatorText.Text = decryptOptions.decryptText();
+            }
+            else
+            {
+                decryptIndicatorText.Text = primeOptions.noValueText();
+            }
+        }
+
         private void tabControl1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
 
@@ -117,22 +127,25 @@ namespace WindowsFormsApplication1
             primePanel.Visible = true;
             setKeysPanel.Visible = false;
             encryptTextPanel.Visible = false;
+            setDecryptPanel.Visible = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             setKeysPanel.Visible = true;
             encryptTextPanel.Visible = false;
+            setDecryptPanel.Visible = false;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             encryptTextPanel.Visible = true;
+            setDecryptPanel.Visible = false;
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-
+            setDecryptPanel.Visible = true;
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -175,6 +188,21 @@ namespace WindowsFormsApplication1
         }
 
         private void label7_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint_2(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label7_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void decryptTextLink_TextChanged(object sender, EventArgs e)
         {
 
         }

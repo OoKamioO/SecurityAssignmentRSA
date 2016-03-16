@@ -57,6 +57,7 @@
     <Compile Include="Prime.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RSA_decrypt.cs" />
     <Compile Include="RSA_Encrypt.cs" />
     <Compile Include="RSA_KEYS.cs" />
     <Compile Include="RSA_Primes.cs" />

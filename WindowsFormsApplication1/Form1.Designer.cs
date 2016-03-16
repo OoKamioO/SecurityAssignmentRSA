@@ -55,10 +55,16 @@
             this.EncryptBox = new System.Windows.Forms.TextBox();
             this.encryptTextLabel = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.setDecryptPanel = new System.Windows.Forms.Panel();
+            this.decryptButton = new System.Windows.Forms.Button();
+            this.decryptTextLink = new System.Windows.Forms.TextBox();
+            this.decryptIndicatorText = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.primePanel.SuspendLayout();
             this.setKeysPanel.SuspendLayout();
             this.topMenuLayout.SuspendLayout();
             this.encryptTextPanel.SuspendLayout();
+            this.setDecryptPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox1
@@ -310,6 +316,7 @@
             // 
             // encryptTextPanel
             // 
+            this.encryptTextPanel.Controls.Add(this.setDecryptPanel);
             this.encryptTextPanel.Controls.Add(this.encryptButton);
             this.encryptTextPanel.Controls.Add(this.EncryptBox);
             this.encryptTextPanel.Controls.Add(this.encryptTextLabel);
@@ -361,6 +368,58 @@
             this.label8.Text = "ENCRYPT TEXT";
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
+            // setDecryptPanel
+            // 
+            this.setDecryptPanel.Controls.Add(this.decryptButton);
+            this.setDecryptPanel.Controls.Add(this.decryptTextLink);
+            this.setDecryptPanel.Controls.Add(this.decryptIndicatorText);
+            this.setDecryptPanel.Controls.Add(this.label9);
+            this.setDecryptPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.setDecryptPanel.Location = new System.Drawing.Point(0, 0);
+            this.setDecryptPanel.Name = "setDecryptPanel";
+            this.setDecryptPanel.Size = new System.Drawing.Size(846, 461);
+            this.setDecryptPanel.TabIndex = 11;
+            this.setDecryptPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint_2);
+            // 
+            // decryptButton
+            // 
+            this.decryptButton.Location = new System.Drawing.Point(333, 272);
+            this.decryptButton.Name = "decryptButton";
+            this.decryptButton.Size = new System.Drawing.Size(151, 67);
+            this.decryptButton.TabIndex = 10;
+            this.decryptButton.Text = "DECRYPT";
+            this.decryptButton.UseVisualStyleBackColor = true;
+            this.decryptButton.Click += new System.EventHandler(this.decryptButton_Click);
+            // 
+            // decryptTextLink
+            // 
+            this.decryptTextLink.Location = new System.Drawing.Point(225, 201);
+            this.decryptTextLink.Name = "decryptTextLink";
+            this.decryptTextLink.Size = new System.Drawing.Size(366, 31);
+            this.decryptTextLink.TabIndex = 9;
+            this.decryptTextLink.TextChanged += new System.EventHandler(this.decryptTextLink_TextChanged);
+            // 
+            // decryptIndicatorText
+            // 
+            this.decryptIndicatorText.AutoSize = true;
+            this.decryptIndicatorText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.decryptIndicatorText.Location = new System.Drawing.Point(219, 126);
+            this.decryptIndicatorText.Name = "decryptIndicatorText";
+            this.decryptIndicatorText.Size = new System.Drawing.Size(376, 33);
+            this.decryptIndicatorText.TabIndex = 8;
+            this.decryptIndicatorText.Text = "ENTER CIPHER FILEPATH";
+            this.decryptIndicatorText.Click += new System.EventHandler(this.label7_Click_2);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(266, 46);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(315, 42);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "DECRYPT TEXT";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -378,6 +437,8 @@
             this.topMenuLayout.ResumeLayout(false);
             this.encryptTextPanel.ResumeLayout(false);
             this.encryptTextPanel.PerformLayout();
+            this.setDecryptPanel.ResumeLayout(false);
+            this.setDecryptPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -410,6 +471,11 @@
         private System.Windows.Forms.TextBox EncryptBox;
         private System.Windows.Forms.Label encryptTextLabel;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Panel setDecryptPanel;
+        private System.Windows.Forms.Button decryptButton;
+        private System.Windows.Forms.TextBox decryptTextLink;
+        private System.Windows.Forms.Label decryptIndicatorText;
+        private System.Windows.Forms.Label label9;
     }
 }
 
