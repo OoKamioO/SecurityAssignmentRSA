@@ -13,11 +13,8 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        BigInteger prime1;
-        BigInteger prime2;
-        private BigInteger mod;
-
-        CreateFile primeFile = new CreateFile();
+        public RSA_Primes primeOptions = new RSA_Primes();
+        public RSA_KEYS keyOptions;
 
         public Form1()
         {
@@ -46,57 +43,29 @@ namespace WindowsFormsApplication1
 
         private void SubmitButton_Click(object sender, EventArgs e)
         {
-            if (BigInteger.TryParse(textBox1.Text, out prime1) && BigInteger.TryParse(textBox2.Text, out prime2))
+            if((textBox1.Text.Trim().Length != 0) 
+                && (textBox2.Text.Trim().Length != 0))
             {
-                if (prime1 != prime2)
-                {
-                    Prime checkPrime1 = new Prime(prime1);
-                    Prime checkPrime2 = new Prime(prime2);
-
-                    if (checkPrime1.calculateIfPrime() && checkPrime2.calculateIfPrime())
-                    {
-                        /*Numbers are prime*/
-                        mod = prime1 * prime2;
-
-                        //primeText.Text = mod + " is the public key";
-
-                        primeText.Text = "SUCCESS!";
-
-                        primeFile.CreateFilePrime(prime1, prime2, mod);
-
-                        Form2 form = new Form2(this);
-                        form.Show();
-                    }
-                    else
-                    {
-                        /*Numbers are even*/
-                        primeText.Text = "PRIMES ONLY";
-                    }
-                }
-                else
-                {
-                    primeText.Text = "UNIQUE ONLY";
-                }
+                primeText.Text = primeOptions.checkNumbers(textBox1.Text, textBox2.Text);
             }
             else
             {
-                primeText.Text = "NO VALUES FOUND";
+                primeText.Text = primeOptions.noValueText();
             }
         }
 
-        public BigInteger getMod()
+        private void button6_Click(object sender, EventArgs e)
         {
-            return mod;
-        }
-
-        public BigInteger getPrime1()
-        {
-            return prime1;
-        }
-
-        public BigInteger getPrime2()
-        {
-            return prime2;
+            if((decrpytBox.Text.Trim().Length != 0) 
+                && (encryptionBox.Text.Trim().Length != 0))
+            {
+                keyOptions = new RSA_KEYS(this);
+                KeysText.Text = keyOptions.checkKeys(encryptionBox.Text, decrpytBox.Text);
+            }
+            else
+            {
+                KeysText.Text = primeOptions.noValueText();
+            }
         }
 
         private void tabControl1_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -131,7 +100,16 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e)
         {
+            primePanel.Visible = true;
+            setKeysPanel.Visible = false;
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (primePanel.Visible)
+            {
+                setKeysPanel.Visible = true;
+            }
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -140,6 +118,25 @@ namespace WindowsFormsApplication1
         }
 
         private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void setKeysPanel_Paint(object sender, PaintEventArgs e)
+        {
+        }
+
+        private void decrpytBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void encryptionBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
         {
 
         }
