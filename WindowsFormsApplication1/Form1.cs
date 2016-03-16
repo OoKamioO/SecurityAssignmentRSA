@@ -58,7 +58,9 @@ namespace WindowsFormsApplication1
                         /*Numbers are prime*/
                         mod = prime1 * prime2;
 
-                        primeText.Text = mod + " is the public key";
+                        //primeText.Text = mod + " is the public key";
+
+                        primeText.Text = "SUCCESS!";
 
                         primeFile.CreateFilePrime(prime1, prime2, mod);
 
@@ -68,17 +70,17 @@ namespace WindowsFormsApplication1
                     else
                     {
                         /*Numbers are even*/
-                        primeText.Text = "Please enter prime numbers";
+                        primeText.Text = "PRIMES ONLY";
                     }
                 }
                 else
                 {
-                    primeText.Text = "Please enter unique Numbers";
+                    primeText.Text = "UNIQUE ONLY";
                 }
             }
             else
             {
-                primeText.Text = "Please enter numbers";
+                primeText.Text = "NO VALUES FOUND";
             }
         }
 
@@ -95,6 +97,51 @@ namespace WindowsFormsApplication1
         public BigInteger getPrime2()
         {
             return prime2;
+        }
+
+        private void tabControl1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
