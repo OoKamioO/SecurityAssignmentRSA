@@ -117,7 +117,6 @@ namespace WindowsFormsApplication1
         {
             BigInteger bigNumber;
             BigInteger divisor;
-            BigInteger temp;
 
             BigInteger remainder; //Placeholder value
 
