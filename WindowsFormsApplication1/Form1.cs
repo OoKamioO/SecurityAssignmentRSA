@@ -38,6 +38,7 @@ namespace WindowsFormsApplication1
 
         }
 
+        /*Submit Primes*/
         private void SubmitButton_Click(object sender, EventArgs e)
         {
             if((textBox1.Text.Trim().Length != 0) 
@@ -51,6 +52,21 @@ namespace WindowsFormsApplication1
             }
         }
 
+        /*Generate Primes Button*/
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Prime rndNumber = new Prime();
+
+            textBox1.Text = rndNumber.createPrimes();
+
+            do
+            {
+                textBox2.Text = rndNumber.createPrimes();
+            }
+            while (String.Compare(textBox1.Text, textBox2.Text) == 0);
+        }
+
+        /*Create Keys button*/
         private void button6_Click(object sender, EventArgs e)
         {
             if((decrpytBox.Text.Trim().Length != 0) 
@@ -65,6 +81,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+        /*Encrypt button*/
         private void encryptButton_Click(object sender, EventArgs e)
         {
             if (EncryptBox.Text.Trim().Length != 0)
@@ -78,6 +95,7 @@ namespace WindowsFormsApplication1
             }
         }
 
+        /*Decrypt Button*/
         private void decryptButton_Click(object sender, EventArgs e)
         {
             if(decryptTextLink.Text.Trim().Length != 0)
@@ -146,11 +164,6 @@ namespace WindowsFormsApplication1
         private void button5_Click(object sender, EventArgs e)
         {
             setDecryptPanel.Visible = true;
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-
         }
 
         private void setKeysPanel_Paint(object sender, PaintEventArgs e)

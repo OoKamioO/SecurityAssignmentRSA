@@ -70,6 +70,7 @@ namespace WindowsFormsApplication1
 
         public void ReadCipherText(string p, BigInteger publicKey, BigInteger decryptKey)
         {
+            BigInteger cipherLetter;
             BigInteger realLetter;
 
             int lineCount = File.ReadLines(p).Count();
@@ -90,15 +91,33 @@ namespace WindowsFormsApplication1
             fileRead = new StreamReader(file1);
             fileWrite = new StreamWriter(file1);
 
+            /*while ((line = fileRead.ReadLine()) != null)
+            {
+                BigInteger numberOfDigitsInString = Convert.ToInt16(line.Length.ToString());
+
+                for (BigInteger i = 0; i < numberOfDigitsInString; i++)
+                {
+                    Char digit = (char)fileRead.Read();
+
+                    cipherNumber[i] = cipherNumber[i] + digit;
+                }
+            }*/
+
             while ((line = fileRead.ReadLine()) != null)
             {
-                realLetter = Power(Convert.ToInt16(line), decryptKey);
+                Console.WriteLine(decryptKey);
+
+                realLetter = Power(Convert.ToUInt64(line), decryptKey);
+
+                cipherLetter = Remainder(realLetter, publicKey);
+
+                //Console.WriteLine(cipherLetter);
 
                 messageInHex[counter] = (realLetter%publicKey).ToString() + Environment.NewLine;
 
                 counter++;
             }
-            
+
             file1.Close();
 
             file2 = new FileStream(pathString, FileMode.Open, FileAccess.ReadWrite);
@@ -109,7 +128,7 @@ namespace WindowsFormsApplication1
 
             for(int i = 0; i < lineCount; i++)
             {
-                int value = Convert.ToInt32(messageInHex[i]);
+                int value = Convert.ToInt16(messageInHex[i]);
                 char c = Convert.ToChar(value);
                 message = message + c;
             }
@@ -131,19 +150,6 @@ namespace WindowsFormsApplication1
 
         public void CreateFileCipherText(BigInteger cipher)
         {
-            /*fileName = "cipher.txt";
-
-            pathString = Path.Combine(folderName, fileName);
-
-            if (!File.Exists(fileName))
-            {
-                pathString = Path.Combine(folderName, fileName);
-
-                file1 = File.Create(pathString);
-                //file1 = File.WriteAllText(pathString, cipher.ToString() + Environment.NewLine);
-                file1.Close();
-            }*/
-
             fileWrite = File.AppendText(pathString);
             fileWrite.WriteLine(cipher.ToString());
 
@@ -190,12 +196,53 @@ namespace WindowsFormsApplication1
         {
             BigInteger pro = 1;
 
-            for (int i = 0; i < b; i++)
+            for (BigInteger i = 0; i < b; i++)
             {
                 pro = pro * a;
             }
 
+            Console.WriteLine(pro);
+
             return pro;
+        }
+
+        public BigInteger Remainder(BigInteger a, BigInteger b)
+        {
+            BigInteger bigNumber;
+            BigInteger divisionCount;
+            BigInteger divisor;
+
+            BigInteger remainder; //Placeholder value
+
+            if (a > b)
+            {
+                bigNumber = a;
+                divisor = b;
+            }
+            else
+            {
+                bigNumber = b;
+                divisor = a;
+            }
+
+            for (;;)
+            {
+                divisionCount = bigNumber / divisor;
+
+                Console.WriteLine(divisionCount);
+
+                remainder = BigInteger.Subtract(bigNumber, divisor*divisionCount);
+
+                Console.WriteLine(remainder);
+
+                //remainder = bigNumber;
+                //bigNumber = BigInteger.Subtract(bigNumber, divisor);
+
+                if (remainder < divisor)
+                {
+                    return remainder;
+                }
+            }
         }
     }
 }

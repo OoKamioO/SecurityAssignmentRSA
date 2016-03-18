@@ -11,6 +11,10 @@ namespace WindowsFormsApplication1
     {
         private BigInteger num;
 
+        public Prime()
+        {
+        }
+
         public Prime(BigInteger prime)
         {
             num = prime;
@@ -18,9 +22,9 @@ namespace WindowsFormsApplication1
 
         public Boolean calculateIfPrime()
         {
-            for(int i = 2; i < num; i++)
+            for (int i = 2; i < num; i++)
             {
-                if(num%i == 0)
+                if (num % i == 0)
                 {
                     return false; //Not a Prime Number
                 }
@@ -29,9 +33,31 @@ namespace WindowsFormsApplication1
             return true;   //Is a Prime Number
         }
 
-        public static implicit operator int(Prime v)
+        public String createPrimes()
         {
-            throw new NotImplementedException();
+            Random rnd = new Random();
+            Boolean isPrime = false;
+            String prime;
+
+            int a = rnd.Next(2, 10000);
+
+            while(!isPrime)
+            {
+                for (int i = 2; i < a; i++)
+                {
+                    if (a % i == 0)
+                    {
+                        //Not a prime
+                        a = rnd.Next(2, 10000);
+
+                        i = 2;
+                    }
+                }
+
+                isPrime = true;
+            }
+
+            return prime = a.ToString();
         }
     }
 }

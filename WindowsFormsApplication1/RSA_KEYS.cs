@@ -54,7 +54,8 @@ namespace WindowsFormsApplication1
 
             for (BigInteger pointer = 2; pointer < coPrimes; pointer++)
             {
-                if ((getGCD(pointer, data.primeOptions.getMod()) == 1) && (getGCD(pointer, coPrimes) == 1))
+                if ((getGCD(pointer, data.primeOptions.getMod()) == 1) 
+                    && (getGCD(pointer, coPrimes) == 1))
                 {
                     encryptKey = pointer;
 
@@ -69,15 +70,18 @@ namespace WindowsFormsApplication1
             }
 
             counter = 0;
+            decryptKey = 0;
             
             while (counter < decryptCount)
             {
-                decryptKey++;
+                decryptKey = decryptKey + 1;
 
                 product = BigInteger.Multiply(encryptKey, decryptKey);
 
                 if (HasRemainderOne(product, coPrimes))
                 {
+                    Console.WriteLine(decryptKey);
+
                     counter++;
                 }
             }
