@@ -64,77 +64,56 @@ namespace WindowsFormsApplication1
             file1 = File.Create(pathString);
             file1.Close();
 
-            File.WriteAllText(pathString, "The decryption key is: " + dKey.ToString());
-            File.WriteAllText(pathString, "The encryption key is: " + eKey.ToString());
+            File.WriteAllText(pathString, "The decryption key is: " + dKey.ToString() + Environment.NewLine + 
+                "The encryption key is: " + eKey.ToString());
         }
 
         public void ReadCipherText(string p, BigInteger publicKey, BigInteger decryptKey)
         {
-            BigInteger cipherLetter;
-            BigInteger realLetter;
-
-            int lineCount = File.ReadLines(p).Count();
-            String[] messageInHex = new String[lineCount];
-
-            int counter = 0;
-
+            String cipherMessage;
+            
             fileName = "decrypt.txt";
 
-            pathString = Path.Combine(folderName, fileName);
+            pathString = System.IO.Path.Combine(folderName, fileName);
 
             file1 = File.Create(pathString);
             file1.Close();
 
-            String line;
+            String messageInCipher;
+            BigInteger messageInCipherBigInt;
 
             file1 = new FileStream(p, FileMode.Open, FileAccess.ReadWrite);
             fileRead = new StreamReader(file1);
             fileWrite = new StreamWriter(file1);
 
-            /*while ((line = fileRead.ReadLine()) != null)
-            {
-                BigInteger numberOfDigitsInString = Convert.ToInt16(line.Length.ToString());
+            messageInCipher = fileRead.ReadLine();
 
-                for (BigInteger i = 0; i < numberOfDigitsInString; i++)
-                {
-                    Char digit = (char)fileRead.Read();
+            BigInteger.TryParse(messageInCipher, out messageInCipherBigInt);
 
-                    cipherNumber[i] = cipherNumber[i] + digit;
-                }
-            }*/
+            Console.WriteLine("M: " + messageInCipherBigInt);
+            Console.WriteLine("Dkey: " + decryptKey);
+            Console.WriteLine("PKey: " + publicKey);
 
-            while ((line = fileRead.ReadLine()) != null)
-            {
-                Console.WriteLine(decryptKey);
+            cipherMessage = modifiedMod(messageInCipherBigInt, decryptKey, publicKey).ToString();
 
-                realLetter = Power(Convert.ToUInt64(line), decryptKey);
+            //cipherMessage = (Power(messageInCipherBigInt, decryptKey) % publicKey).ToString();
 
-                cipherLetter = Remainder(realLetter, publicKey);
+            Console.WriteLine("PCipher: " + cipherMessage);
 
-                //Console.WriteLine(cipherLetter);
+            messageInCipher = HexString2Ascii(cipherMessage);
 
-                messageInHex[counter] = (realLetter%publicKey).ToString() + Environment.NewLine;
+            cipherMessage = HexString2Ascii(messageInCipher);
 
-                counter++;
-            }
+            Console.WriteLine(cipherMessage);
+
+            //messageInHex[counter] = (realLetter%publicKey).ToString() + Environment.NewLine;
 
             file1.Close();
 
             file2 = new FileStream(pathString, FileMode.Open, FileAccess.ReadWrite);
             fileWrite = new StreamWriter(file2);
 
-            String message = "";
-            char[] message2 = new char[lineCount];
-
-            for(int i = 0; i < lineCount; i++)
-            {
-                int value = Convert.ToInt16(messageInHex[i]);
-                char c = Convert.ToChar(value);
-                message = message + c;
-            }
-
-            fileWrite.WriteLine(message);
-
+            fileWrite.WriteLine(cipherMessage);
             fileWrite.Close();
         }
 
@@ -148,10 +127,10 @@ namespace WindowsFormsApplication1
             file1.Close();
         }
 
-        public void CreateFileCipherText(BigInteger cipher)
+        public void CreateFileCipherText(String cipher)
         {
             fileWrite = File.AppendText(pathString);
-            fileWrite.WriteLine(cipher.ToString());
+            fileWrite.WriteLine(cipher);
 
             fileWrite.Close();
         }
@@ -187,9 +166,44 @@ namespace WindowsFormsApplication1
             return sb.ToString();
         }
 
+        /*private string HexString2Ascii(string hexString)
+        {
+            String messageInHex = "";
+
+            for (int i = 0; i < hexString.Length - 2; i += 2)
+            {
+                String value1 = "" + hexString[i];
+                String value2 = "" + hexString[i + 1];
+                String hexValue = value1 + value2;
+
+                messageInHex = messageInHex + Convert.ToChar(Convert.ToUInt32(hexValue, 16));
+            }
+
+            return messageInHex;
+        }*/
+
         public string returnPath()
         {
             return pathString;
+        }
+
+        BigInteger modifiedMod(BigInteger baseVal, BigInteger expVal, BigInteger modVal)
+        {
+            BigInteger remainder = 1;
+
+            while (expVal > 0)
+            {
+                if (expVal % 2 != 0)
+                {
+                    remainder *= baseVal;
+                    remainder = remainder % modVal;
+                }
+
+                expVal /= 2;
+                baseVal = (baseVal * baseVal) % modVal;
+            }
+
+            return remainder;
         }
 
         BigInteger Power(BigInteger a, BigInteger b)
@@ -200,8 +214,6 @@ namespace WindowsFormsApplication1
             {
                 pro = pro * a;
             }
-
-            Console.WriteLine(pro);
 
             return pro;
         }
@@ -229,11 +241,11 @@ namespace WindowsFormsApplication1
             {
                 divisionCount = bigNumber / divisor;
 
-                Console.WriteLine(divisionCount);
+                //Console.WriteLine(divisionCount);
 
-                remainder = BigInteger.Subtract(bigNumber, divisor*divisionCount);
+                remainder = BigInteger.Subtract(bigNumber, (divisor*divisionCount));
 
-                Console.WriteLine(remainder);
+                //Console.WriteLine(remainder);
 
                 //remainder = bigNumber;
                 //bigNumber = BigInteger.Subtract(bigNumber, divisor);

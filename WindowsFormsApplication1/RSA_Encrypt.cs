@@ -26,9 +26,9 @@ namespace WindowsFormsApplication1
             string filePath;
             int messageLen = text.Length;
 
-            BigInteger[] messageInHex = new BigInteger[messageLen]; //Gives each character their HEX value
-            BigInteger encryptMessageInHex = new BigInteger(); //Holds value after being powered
-            BigInteger charCipher = new BigInteger(); //Holds the encrypted message
+            byte[] letterInHex = new byte[messageLen]; //Gives each character their HEX value
+            String messageInHex = ""; //Holds message in Hexadecimal
+            String encryptMessageInHex = ""; //Holds encrypted message value after being powered
 
             BigInteger publicKey = data.primeOptions.getMod();
             BigInteger encryptionKey = data.keyOptions.getEncryptKey();
@@ -36,20 +36,64 @@ namespace WindowsFormsApplication1
 
             cipherText.CheckExists();
 
-            for (int i = 0; i < messageLen; i++)
+            letterInHex = Encoding.Default.GetBytes(message);
+
+            messageInHex = BitConverter.ToString(letterInHex);
+            messageInHex = messageInHex.Replace("-", "");
+
+            Byte[] letterInHex2 = new Byte[messageInHex.Length];
+
+            letterInHex2 = Encoding.Default.GetBytes(messageInHex);
+
+            messageInHex = BitConverter.ToString(letterInHex2);
+            messageInHex = messageInHex.Replace("-", "");
+
+            BigInteger hexValueInBigInt;
+            BigInteger.TryParse(messageInHex, out hexValueInBigInt);
+
+            encryptMessageInHex = (modifiedMod(hexValueInBigInt, encryptionKey, publicKey)).ToString();
+
+            Console.WriteLine(hexValueInBigInt);
+
+            /*for (int i = 0; i < messageLen; i++)
             {
-                messageInHex[i] = Convert.ToByte(message[i]);
+                letterInDec[i] = Convert.ToByte(message[i]);
 
-                encryptMessageInHex = Power(messageInHex[i], encryptionKey);
+                encryptMessageInDec = encryptMessageInDec + letterInDec[i];
+            }*/
 
-                charCipher = encryptMessageInHex % publicKey;
-
-                cipherText.CreateFileCipherText(charCipher);
-            }
+            /*encryptMessageInHex = Power(messageInHex[i], encryptionKey);
+            charCipher = encryptMessageInHex % publicKey;*/
+            cipherText.CreateFileCipherText(encryptMessageInHex);
 
             filePath = cipherText.returnPath();
 
             return text = data.primeOptions.success();
+        }
+
+        BigInteger modifiedMod(BigInteger baseVal, BigInteger expVal, BigInteger modVal)
+        {
+            BigInteger remainder = 1;
+
+            /*for (BigInteger i = 1; i <= expVal; i++)
+            {
+                remainder *= baseVal;
+                remainder = remainder % modVal;
+            }*/
+
+            while(expVal > 0)
+            {
+                if(expVal%2 != 0)
+                {
+                    remainder *= baseVal;
+                    remainder = remainder % modVal;
+                }
+
+                expVal /= 2;
+                baseVal = (baseVal * baseVal) % modVal;
+            }
+            
+            return remainder;
         }
 
         BigInteger Power(BigInteger a, BigInteger b)
@@ -62,6 +106,38 @@ namespace WindowsFormsApplication1
             }
 
             return pro;
+        }
+
+        public BigInteger Remainder(BigInteger a, BigInteger b)
+        {
+            BigInteger bigNumber;
+            BigInteger divisionCount;
+            BigInteger divisor;
+
+            BigInteger remainder; //Placeholder value
+
+            if (a > b)
+            {
+                bigNumber = a;
+                divisor = b;
+            }
+            else
+            {
+                bigNumber = b;
+                divisor = a;
+            }
+
+            for (;;)
+            {
+                divisionCount = bigNumber / divisor;
+
+                remainder = BigInteger.Subtract(bigNumber, (divisor * divisionCount));
+
+                if (remainder < divisor)
+                {
+                    return remainder;
+                }
+            }
         }
     }
 }

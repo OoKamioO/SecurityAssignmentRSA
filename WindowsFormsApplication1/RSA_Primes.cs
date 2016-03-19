@@ -42,8 +42,8 @@ namespace WindowsFormsApplication1
 
                     if (checkPrime1.calculateIfPrime() && checkPrime2.calculateIfPrime())
                     {
-                        /*Numbers are confirmed prime*/
-                        mod = prime1 * prime2;
+                    /*Numbers are confirmed prime*/
+                    mod = prime1 * prime2;
 
                         primeFile.CreateFilePrime(prime1, prime2, mod);
 

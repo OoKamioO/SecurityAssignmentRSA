@@ -39,7 +39,7 @@ namespace WindowsFormsApplication1
             Boolean isPrime = false;
             String prime;
 
-            int a = rnd.Next(2, 10000);
+            int a = rnd.Next(70000, 100000);
 
             while(!isPrime)
             {
@@ -48,7 +48,7 @@ namespace WindowsFormsApplication1
                     if (a % i == 0)
                     {
                         //Not a prime
-                        a = rnd.Next(2, 10000);
+                        a = rnd.Next(70000, 100000);
 
                         i = 2;
                     }

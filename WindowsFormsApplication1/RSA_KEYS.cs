@@ -46,45 +46,92 @@ namespace WindowsFormsApplication1
             BigInteger counter = 0;
 
             //Number of cooprimes in the product of prime1 and prime2
-            coPrimes = (data.primeOptions.getPrime1() - 1) * (data.primeOptions.getPrime2() - 1);
+            coPrimes = BigInteger.Divide((data.primeOptions.getPrime1() - 1)*(data.primeOptions.getPrime2() - 1), 
+                getGCD(data.primeOptions.getPrime1(), data.primeOptions.getPrime2()));
 
             decryptResultText = new CreateFile();
 
             counter = 0;
 
-            for (BigInteger pointer = 2; pointer < coPrimes; pointer++)
+            Parallel.For(2, Int32.MaxValue, (pointer, loopState) =>
             {
-                if ((getGCD(pointer, data.primeOptions.getMod()) == 1) 
+                if ((getGCD(pointer, data.primeOptions.getMod()) == 1)
                     && (getGCD(pointer, coPrimes) == 1))
                 {
-                    encryptKey = pointer;
-
                     counter++;
-                }
 
-                //Selected Encryption key from set
-                if (counter == encryptionCount)
-                {
-                    break;
+                    if (counter == encryptionCount)
+                    {
+                        encryptKey = pointer;
+                        loopState.Break();
+                    }
                 }
             }
+            );
 
             counter = 0;
-            decryptKey = 0;
-            
-            while (counter < decryptCount)
+            decryptKey = 1;
+
+            Parallel.For(0, Int32.MaxValue, (temp, loopState) =>
+            {
+                product = BigInteger.Multiply(encryptKey, temp);
+
+                if (BigInteger.Remainder(product, coPrimes) == 1)
+                {
+                    temp++;
+                    counter++;
+
+                    if (counter > decryptCount)
+                    {
+                        decryptKey = temp - 1;
+
+                        loopState.Break();
+                    }
+                }
+            }
+            );
+
+          /*for(BigInteger pointer = 2; pointer < coPrimes; pointer++)
+         {
+        if ((getGCD(pointer, data.primeOptions.getMod()) == 1) 
+            && (getGCD(pointer, coPrimes) == 1))
+        {
+            encryptKey = pointer;
+
+            counter++;
+        }
+
+            //Selected Encryption key from set
+            if (counter == encryptionCount)
+            {
+                break;
+            }
+        }
+
+            counter = 0;
+            decryptKey = 1;*/
+
+            /*while ((counter < decryptCount) && (decryptKey < coPrimes))
             {
                 decryptKey = decryptKey + 1;
 
                 product = BigInteger.Multiply(encryptKey, decryptKey);
 
-                if (HasRemainderOne(product, coPrimes))
+                /*if (HasRemainderOne(product, coPrimes))
                 {
-                    Console.WriteLine(decryptKey);
-
                     counter++;
                 }
+
+            /*if(modifiedMod(product, 1, coPrimes) == 1)
+            {
+                counter++;
+            }*/
+            /*
+            if(BigInteger.Remainder(product, coPrimes) == 1)
+            {
+                counter++;
             }
+        }*/
 
             decryptResultText.CreateFileEncrypt(decryptKey, encryptKey);
 
@@ -93,6 +140,31 @@ namespace WindowsFormsApplication1
 
             //Form3 data1 = new Form3(this);
             //data1.Show();
+        }
+
+        BigInteger modifiedMod(BigInteger baseVal, BigInteger expVal, BigInteger modVal)
+        {
+            BigInteger remainder = 1;
+
+            /*for (BigInteger i = 1; i <= expVal; i++)
+            {
+                remainder *= baseVal;
+                remainder = remainder % modVal;
+            }*/
+
+            while (expVal > 0)
+            {
+                if (expVal % 2 != 0)
+                {
+                    remainder *= baseVal;
+                    remainder = remainder % modVal;
+                }
+
+                expVal /= 2;
+                baseVal = (baseVal * baseVal) % modVal;
+            }
+
+            return remainder;
         }
 
         public BigInteger getEncryptKey()
@@ -121,6 +193,7 @@ namespace WindowsFormsApplication1
         {
             BigInteger bigNumber;
             BigInteger divisor;
+            //BigInteger divisorCounter;
 
             BigInteger remainder; //Placeholder value
 
@@ -136,9 +209,11 @@ namespace WindowsFormsApplication1
             }
 
             remainder = divisor;
-
-            for (;;)
+            
+            /*for (;;)
             {
+                //divisorCounter = bigNumber % divisor;
+
                 bigNumber = BigInteger.Subtract(bigNumber, divisor);
 
                 if (bigNumber == 0)
@@ -152,7 +227,16 @@ namespace WindowsFormsApplication1
                     bigNumber = divisor;
                     divisor = remainder;
                 }
+            }*/
+
+            while(divisor != 0)
+            {
+                remainder = divisor;
+                divisor = bigNumber % divisor;
+                bigNumber = remainder;
             }
+
+            return remainder;
         }
 
         public Boolean HasRemainderOne(BigInteger a, BigInteger b)
@@ -173,7 +257,7 @@ namespace WindowsFormsApplication1
                 divisor = a;
             }
 
-            for (;;)
+            /*for (;;)
             {
                 remainder = bigNumber;
                 bigNumber = BigInteger.Subtract(bigNumber, divisor);
@@ -187,6 +271,17 @@ namespace WindowsFormsApplication1
                 {
                     return true;
                 }
+            }*/
+
+            remainder = bigNumber % divisor;
+
+            if(remainder == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
